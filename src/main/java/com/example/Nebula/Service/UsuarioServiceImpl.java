@@ -4,7 +4,6 @@ import com.example.Nebula.DTO.LoginDTO;
 import com.example.Nebula.DTO.LoginResponseDTO;
 import com.example.Nebula.DTO.RegistroDTO;
 import com.example.Nebula.Model.Usuario;
-import com.example.Nebula.Model.Rol;
 import com.example.Nebula.Repository.UsuarioRepository;
 import com.example.Nebula.security.JwtUtil;
 import com.example.Nebula.security.ValidarContraseña;
@@ -49,7 +48,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setNombre(request.getNombre());
         usuario.setTelefono(request.getTelefono());
         usuario.setDireccion(request.getDireccion());
-        usuario.setRol(Rol.CLIENTE);
+        usuario.setRol("CLIENTE");
         usuario.setActivo(true);
         usuario.setFechaRegistro(LocalDateTime.now());
 

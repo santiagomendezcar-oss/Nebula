@@ -11,22 +11,25 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = "*")
 @Tag(name = "Autenticación", description = "API para registro, login y sesiones de invitado")
-
 public class AutenticacionController {
 
     private final UsuarioService usuarioService;
     private final SesionInvitadoService sesionInvitadoService;
     private final NotificacionService notificacionService;
 
-    public AutenticacionController(UsuarioService usuarioService, SesionInvitadoService sesionInvitadoService, NotificacionService notificacionService) {
+    public AutenticacionController(UsuarioService usuarioService,
+                                   SesionInvitadoService sesionInvitadoService,
+                                   NotificacionService notificacionService) {
         this.usuarioService = usuarioService;
         this.sesionInvitadoService = sesionInvitadoService;
         this.notificacionService = notificacionService;
@@ -34,7 +37,21 @@ public class AutenticacionController {
 
     @PostMapping("/registro")
     @Operation(summary = "Registrar nuevo usuario")
-    public ResponseEntity<?> registrar(@Valid @RequestBody RegistroDTO request) {
+    public ResponseEntity<?> registrar(@Valid @RequestBody RegistroDTO request,
+                                       BindingResult bindingResult) {
+
+        // Si hay errores de validación
+        if (bindingResult.hasErrors()) {
+            String errores = bindingResult.getAllErrors()
+                    .stream()
+                    .map(error -> error.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+
+            Map<String, String> error = new HashMap<>();
+            error.put("error", errores);
+            return ResponseEntity.badRequest().body(error);
+        }
+
         try {
             Usuario usuario = usuarioService.registrarUsuario(request);
             Map<String, Object> response = new HashMap<>();
@@ -51,7 +68,21 @@ public class AutenticacionController {
 
     @PostMapping("/login")
     @Operation(summary = "Iniciar sesión")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginDTO request) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginDTO request,
+                                   BindingResult bindingResult) {
+
+        // Si hay errores de validación
+        if (bindingResult.hasErrors()) {
+            String errores = bindingResult.getAllErrors()
+                    .stream()
+                    .map(error -> error.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+
+            Map<String, String> error = new HashMap<>();
+            error.put("error", errores);
+            return ResponseEntity.badRequest().body(error);
+        }
+
         try {
             LoginResponseDTO response = usuarioService.login(request);
             return ResponseEntity.ok(response);
@@ -98,5 +129,4 @@ public class AutenticacionController {
         response.put("existe", existe);
         return ResponseEntity.ok(response);
     }
-
 }

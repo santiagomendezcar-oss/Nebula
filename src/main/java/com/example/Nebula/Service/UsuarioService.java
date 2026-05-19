@@ -12,6 +12,6 @@ public interface UsuarioService {
     Usuario getUsuarioById(Long id);
     Usuario getUsuarioByEmail(String email);
     Usuario actualizarPerfil(Long id, Usuario usuario);
-    boolean existeEmail(String email);
+    boolean existeEmail(String email);  // ✅ Solo declaración, sin implementación
 
 }
