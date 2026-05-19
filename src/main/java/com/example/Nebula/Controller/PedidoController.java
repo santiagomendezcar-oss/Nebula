@@ -37,6 +37,15 @@ public class PedidoController {
     public ResponseEntity<Pedido> getPedidoById(@PathVariable Long id) {
         return ResponseEntity.ok(pedidoService.getPedidoById(id));
     }
+    @GetMapping("/usuario/{usuarioId}")
+    public ResponseEntity<List<Pedido>> getPedidosByUsuario(@PathVariable Long usuarioId) {
+        return ResponseEntity.ok(pedidoService.getPedidosByUsuario(usuarioId));
+    }
+
+    @GetMapping("/invitado/{sesionId}")
+    public ResponseEntity<List<Pedido>> getPedidosByInvitado(@PathVariable String sesionId) {
+        return ResponseEntity.ok(pedidoService.getPedidosByInvitado(sesionId));
+    }
 
     @PostMapping
     @Operation(summary = "Crear nuevo pedido sin domicilio")

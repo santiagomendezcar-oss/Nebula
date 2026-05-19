@@ -187,6 +187,16 @@ public class PedidoServiceImpl implements PedidoService {
 
         return pedido;
     }
+    @Override
+    public List<Pedido> getPedidosByUsuario(Long usuarioId) {
+        return pedidoRepository.findByUsuarioId(usuarioId);
+
+    }
+
+    @Override
+    public List<Pedido> getPedidosByInvitado(String sesionId) {
+        return pedidoRepository.findBySesionInvitadoId(sesionId);
+    }
 
     // Método auxiliar
     private Pedido crearPedidoBase(PedidoDTO request) {

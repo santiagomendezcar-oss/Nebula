@@ -14,5 +14,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     List<Pedido> findByEstado(EstadoPedido estado);
     List<Pedido> findByEsDomicilio(Boolean esDomicilio);
     List<Pedido> findByFechaPedidoBetween(LocalDateTime inicio, LocalDateTime fin);
+    List<Pedido> findByUsuarioId(Long usuarioId);
+    List<Pedido> findBySesionInvitadoId(String sesionId);
 
 }

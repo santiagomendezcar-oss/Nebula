@@ -9,6 +9,8 @@ import java.util.List;
 public interface PedidoService {
 
     List<Pedido> getAllPedidos();
+    List<Pedido> getPedidosByUsuario(Long usuarioId);
+    List<Pedido> getPedidosByInvitado(String sesionId);
     Pedido getPedidoById(Long id);
     Pedido crearPedido(PedidoDTO request);
     Pedido crearPedidoConDomicilio(PedidoDomicilioDTO request);
