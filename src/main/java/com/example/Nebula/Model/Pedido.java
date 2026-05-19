@@ -1,5 +1,7 @@
 package com.example.Nebula.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +15,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Pedido {
 
     @Id
@@ -28,6 +29,7 @@ public class Pedido {
     private EstadoPedido estado;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    @JsonManagedReference  // ← OPCIONAL: ayuda con la serialización
     private List<PedidoProducto> productos = new ArrayList<>();
 
     private String metodoPago;
@@ -40,6 +42,7 @@ public class Pedido {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
+    @JsonIgnore  // ← EVITA RECURSIÓN CON USUARIO
     private Usuario usuario;
 
     private String sesionInvitadoId;

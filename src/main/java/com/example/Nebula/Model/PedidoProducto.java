@@ -1,5 +1,6 @@
 package com.example.Nebula.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class PedidoProducto {
 
     @Id
@@ -21,6 +21,7 @@ public class PedidoProducto {
 
     @ManyToOne
     @JoinColumn(name = "pedido_id")
+    @JsonIgnore  // ← 🔥 EVITA LA RECURSIÓN INFINITA
     private Pedido pedido;
 
     @ManyToOne
