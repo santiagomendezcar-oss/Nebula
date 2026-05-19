@@ -35,7 +35,7 @@ public class Pedido {
     @Column(nullable = false)
     private Boolean esDomicilio = false;
 
-    @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "pedido")
     private Domicilio domicilio;
 
     @ManyToOne
