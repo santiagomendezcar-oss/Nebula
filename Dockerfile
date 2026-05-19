@@ -1,33 +1,26 @@
-# Dockerfile Multi-stage para optimizar tamaño
+# Dockerfile Multi-stage optimizado
 FROM maven:3.9.5-eclipse-temurin-17 AS build
 
 WORKDIR /app
-
-# Copiar pom.xml y descargar dependencias (cache layer)
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
 
-# Copiar código fuente y compilar
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Imagen final
-FROM openjdk:17-jdk-slim
+# Imagen final - Usar Eclipse Temurin (oficial)
+FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 
-# Copiar el JAR genérico (cualquier nombre que termine en .jar)
+# Copiar JAR
 COPY --from=build /app/target/*.jar app.jar
-
-# Instalar curl para healthcheck
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 # Exponer puerto
 EXPOSE 8080
 
-# Healthcheck
-HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
-  CMD curl -f http://localhost:8080/api/productos || exit 1
+# Usar variable de puerto de Render
+ENV PORT=8080
 
 # Comando de entrada
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["sh", "-c", "java -jar -Dserver.port=${PORT} app.jar"]
