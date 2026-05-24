@@ -1,5 +1,6 @@
 package com.example.Nebula.Service;
 
+import com.example.Nebula.DTO.IngredienteDTO;
 import com.example.Nebula.Model.Ingrediente;
 import com.example.Nebula.Repository.IngredienteRepository;
 import org.springframework.stereotype.Service;
@@ -7,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-
 public class IngredienteServiceImpl implements IngredienteService {
 
     private final IngredienteRepository ingredienteRepository;
@@ -31,6 +31,48 @@ public class IngredienteServiceImpl implements IngredienteService {
         return ingredienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Ingrediente no encontrado con ID: " + id));
     }
+
+    // ========== MÉTODOS PARA ADMIN CON DTO ==========
+
+    @Override
+    @Transactional
+    public Ingrediente crearIngrediente(IngredienteDTO request) {
+        // Verificar si ya existe un ingrediente con el mismo nombre
+        if (ingredienteRepository.findByNombre(request.getNombre()).isPresent()) {
+            throw new RuntimeException("Ya existe un ingrediente con el nombre: " + request.getNombre());
+        }
+
+        Ingrediente ingrediente = new Ingrediente();
+        ingrediente.setNombre(request.getNombre());
+        ingrediente.setCategoria(request.getCategoria());
+        ingrediente.setPrecioExtra(request.getPrecioExtra());
+        ingrediente.setDisponible(request.getDisponible() != null ? request.getDisponible() : true);
+
+        return ingredienteRepository.save(ingrediente);
+    }
+
+    @Override
+    @Transactional
+    public Ingrediente actualizarIngrediente(Long id, IngredienteDTO request) {
+        Ingrediente ingrediente = getIngredienteById(id);
+        ingrediente.setNombre(request.getNombre());
+        ingrediente.setCategoria(request.getCategoria());
+        ingrediente.setPrecioExtra(request.getPrecioExtra());
+        ingrediente.setDisponible(request.getDisponible() != null ? request.getDisponible() : ingrediente.getDisponible());
+
+        return ingredienteRepository.save(ingrediente);
+    }
+
+    @Override
+    @Transactional
+    public void eliminarIngrediente(Long id) {
+        if (!ingredienteRepository.existsById(id)) {
+            throw new RuntimeException("Ingrediente no encontrado con ID: " + id);
+        }
+        ingredienteRepository.deleteById(id);
+    }
+
+    // ========== MÉTODOS LEGACY (si los necesitas por compatibilidad) ==========
 
     @Override
     @Transactional
@@ -60,5 +102,4 @@ public class IngredienteServiceImpl implements IngredienteService {
         }
         ingredienteRepository.deleteById(id);
     }
-
 }

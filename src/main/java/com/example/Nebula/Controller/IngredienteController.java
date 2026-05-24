@@ -1,5 +1,6 @@
 package com.example.Nebula.Controller;
 
+import com.example.Nebula.DTO.IngredienteDTO;
 import com.example.Nebula.Model.Ingrediente;
 import com.example.Nebula.Service.IngredienteService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,7 +15,6 @@ import java.util.List;
 @RequestMapping("/api/ingredientes")
 @CrossOrigin(origins = "*")
 @Tag(name = "Ingredientes", description = "API para gestión de ingredientes")
-
 public class IngredienteController {
 
     private final IngredienteService ingredienteService;
@@ -22,6 +22,8 @@ public class IngredienteController {
     public IngredienteController(IngredienteService ingredienteService) {
         this.ingredienteService = ingredienteService;
     }
+
+    // ========== ENDPOINTS PÚBLICOS ==========
 
     @GetMapping
     @Operation(summary = "Obtener todos los ingredientes")
@@ -41,23 +43,26 @@ public class IngredienteController {
         return ResponseEntity.ok(ingredienteService.getIngredienteById(id));
     }
 
+    // ========== ENDPOINTS DE ADMIN (requieren rol ADMIN) ==========
+
     @PostMapping
-    @Operation(summary = "Crear nuevo ingrediente")
-    public ResponseEntity<Ingrediente> createIngrediente(@Valid @RequestBody Ingrediente ingrediente) {
-        return new ResponseEntity<>(ingredienteService.createIngrediente(ingrediente), HttpStatus.CREATED);
+    @Operation(summary = "Crear nuevo ingrediente (Admin)")
+    public ResponseEntity<Ingrediente> crearIngrediente(@Valid @RequestBody IngredienteDTO request) {
+        return new ResponseEntity<>(ingredienteService.crearIngrediente(request), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Actualizar ingrediente")
-    public ResponseEntity<Ingrediente> updateIngrediente(@PathVariable Long id, @Valid @RequestBody Ingrediente ingrediente) {
-        return ResponseEntity.ok(ingredienteService.updateIngrediente(id, ingrediente));
+    @Operation(summary = "Actualizar ingrediente (Admin)")
+    public ResponseEntity<Ingrediente> actualizarIngrediente(
+            @PathVariable Long id,
+            @Valid @RequestBody IngredienteDTO request) {
+        return ResponseEntity.ok(ingredienteService.actualizarIngrediente(id, request));
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Eliminar ingrediente")
-    public ResponseEntity<Void> deleteIngrediente(@PathVariable Long id) {
-        ingredienteService.deleteIngrediente(id);
+    @Operation(summary = "Eliminar ingrediente (Admin)")
+    public ResponseEntity<Void> eliminarIngrediente(@PathVariable Long id) {
+        ingredienteService.eliminarIngrediente(id);
         return ResponseEntity.noContent().build();
     }
-
 }

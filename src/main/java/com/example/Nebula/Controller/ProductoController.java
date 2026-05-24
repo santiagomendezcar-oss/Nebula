@@ -15,7 +15,6 @@ import java.util.List;
 @RequestMapping("/api/productos")
 @CrossOrigin(origins = "*")
 @Tag(name = "Productos", description = "API para gestión de productos del menú")
-
 public class ProductoController {
 
     private final ProductoService productoService;
@@ -23,6 +22,8 @@ public class ProductoController {
     public ProductoController(ProductoService productoService) {
         this.productoService = productoService;
     }
+
+    // ========== ENDPOINTS PÚBLICOS ==========
 
     @GetMapping
     @Operation(summary = "Obtener todos los productos")
@@ -42,33 +43,34 @@ public class ProductoController {
         return ResponseEntity.ok(productoService.getProductoById(id));
     }
 
-    @PostMapping
-    @Operation(summary = "Crear nuevo producto")
-    public ResponseEntity<Producto> createProducto(@Valid @RequestBody ProductoDTO productoDTO) {
-        Producto producto = new Producto();
-        producto.setNombre(productoDTO.getNombre());
-        producto.setDescripcion(productoDTO.getDescripcion());
-        producto.setPrecioBase(productoDTO.getPrecioBase());
-        producto.setCategoria(productoDTO.getCategoria());
-        producto.setDisponible(productoDTO.getDisponible() != null ? productoDTO.getDisponible() : true);
+    // ========== ENDPOINTS DE ADMIN ==========
 
-        return new ResponseEntity<>(
-                productoService.createProducto(producto, productoDTO.getIngredientesBaseIds()),
-                HttpStatus.CREATED
-        );
+    @PostMapping
+    @Operation(summary = "Crear nuevo producto (Admin)")
+    public ResponseEntity<Producto> crearProducto(@Valid @RequestBody ProductoDTO request) {
+        return new ResponseEntity<>(productoService.crearProducto(request), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Actualizar producto")
-    public ResponseEntity<Producto> updateProducto(@PathVariable Long id, @Valid @RequestBody Producto producto) {
-        return ResponseEntity.ok(productoService.updateProducto(id, producto));
+    @Operation(summary = "Actualizar producto (Admin)")
+    public ResponseEntity<Producto> actualizarProducto(
+            @PathVariable Long id,
+            @Valid @RequestBody ProductoDTO request) {
+        return ResponseEntity.ok(productoService.actualizarProducto(id, request));
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Eliminar producto")
-    public ResponseEntity<Void> deleteProducto(@PathVariable Long id) {
-        productoService.deleteProducto(id);
+    @Operation(summary = "Eliminar producto (Admin)")
+    public ResponseEntity<Void> eliminarProducto(@PathVariable Long id) {
+        productoService.eliminarProducto(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping("/{id}/disponible")
+    @Operation(summary = "Cambiar disponibilidad del producto (Admin)")
+    public ResponseEntity<Producto> cambiarDisponibilidad(
+            @PathVariable Long id,
+            @RequestParam Boolean disponible) {
+        return ResponseEntity.ok(productoService.cambiarDisponibilidad(id, disponible));
+    }
 }
