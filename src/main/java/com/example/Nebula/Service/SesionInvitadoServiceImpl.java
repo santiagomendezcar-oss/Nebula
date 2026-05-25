@@ -43,7 +43,7 @@ public class SesionInvitadoServiceImpl implements SesionInvitadoService {
             throw new RuntimeException("Sesión de invitado inactiva");
         }
 
-        // Verificar si la sesión ha expirado (más de 24 horas sin actividad)
+
         LocalDateTime limite = LocalDateTime.now().minusHours(24);
         if (sesion.getUltimaActividad().isBefore(limite)) {
             sesion.setActiva(false);

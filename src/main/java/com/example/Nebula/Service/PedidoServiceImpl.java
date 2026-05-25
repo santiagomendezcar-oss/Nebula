@@ -198,9 +198,9 @@ public class PedidoServiceImpl implements PedidoService {
         return pedidoRepository.findBySesionInvitadoId(sesionId);
     }
 
-    // Método auxiliar
+
     private Pedido crearPedidoBase(PedidoDTO request) {
-        // El mismo código que crearPedido() pero sin guardar aún
+
         if (request.getProductos() == null || request.getProductos().isEmpty()) {
             throw new RuntimeException("El pedido debe contener al menos un producto");
         }

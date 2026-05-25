@@ -40,7 +40,7 @@ public class AutenticacionController {
     public ResponseEntity<?> registrar(@Valid @RequestBody RegistroDTO request,
                                        BindingResult bindingResult) {
 
-        // Si hay errores de validación
+
         if (bindingResult.hasErrors()) {
             String errores = bindingResult.getAllErrors()
                     .stream()
@@ -71,7 +71,7 @@ public class AutenticacionController {
     public ResponseEntity<?> login(@Valid @RequestBody LoginDTO request,
                                    BindingResult bindingResult) {
 
-        // Si hay errores de validación
+
         if (bindingResult.hasErrors()) {
             String errores = bindingResult.getAllErrors()
                     .stream()

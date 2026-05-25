@@ -23,7 +23,6 @@ public class IngredienteController {
         this.ingredienteService = ingredienteService;
     }
 
-    // ========== ENDPOINTS PÚBLICOS ==========
 
     @GetMapping
     @Operation(summary = "Obtener todos los ingredientes")
@@ -43,7 +42,7 @@ public class IngredienteController {
         return ResponseEntity.ok(ingredienteService.getIngredienteById(id));
     }
 
-    // ========== ENDPOINTS DE ADMIN (requieren rol ADMIN) ==========
+
 
     @PostMapping
     @Operation(summary = "Crear nuevo ingrediente (Admin)")

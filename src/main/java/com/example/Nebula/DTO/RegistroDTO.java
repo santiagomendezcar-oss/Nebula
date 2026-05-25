@@ -23,7 +23,7 @@ public class RegistroDTO {
     private String telefono;
     private String direccion;
 
-    // Getters y Setters
+
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 

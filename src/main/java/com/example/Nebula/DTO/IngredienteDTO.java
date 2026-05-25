@@ -18,7 +18,7 @@ public class IngredienteDTO {
     @NotNull(message = "La disponibilidad es obligatoria")
     private Boolean disponible;
 
-    // Getters y Setters
+
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
 

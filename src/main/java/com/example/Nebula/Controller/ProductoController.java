@@ -23,7 +23,6 @@ public class ProductoController {
         this.productoService = productoService;
     }
 
-    // ========== ENDPOINTS PÚBLICOS ==========
 
     @GetMapping
     @Operation(summary = "Obtener todos los productos")
@@ -43,7 +42,6 @@ public class ProductoController {
         return ResponseEntity.ok(productoService.getProductoById(id));
     }
 
-    // ========== ENDPOINTS DE ADMIN ==========
 
     @PostMapping
     @Operation(summary = "Crear nuevo producto (Admin)")

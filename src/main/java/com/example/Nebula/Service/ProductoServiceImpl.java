@@ -36,7 +36,7 @@ public class ProductoServiceImpl implements ProductoService {
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));
     }
 
-    // ========== MÉTODOS LEGACY (existentes) ==========
+
 
     @Override
     @Transactional
@@ -69,7 +69,7 @@ public class ProductoServiceImpl implements ProductoService {
         productoRepository.deleteById(id);
     }
 
-    // ========== NUEVOS MÉTODOS PARA ADMIN (con DTO) ==========
+
 
     @Override
     @Transactional
@@ -81,7 +81,7 @@ public class ProductoServiceImpl implements ProductoService {
         producto.setCategoria(request.getCategoria());
         producto.setDisponible(request.getDisponible() != null ? request.getDisponible() : true);
 
-        // Asignar ingredientes base si existen
+
         if (request.getIngredientesBaseIds() != null && !request.getIngredientesBaseIds().isEmpty()) {
             List<Ingrediente> ingredientes = ingredienteRepository.findAllById(request.getIngredientesBaseIds());
             producto.setIngredientesBase(ingredientes);
@@ -100,7 +100,7 @@ public class ProductoServiceImpl implements ProductoService {
         producto.setCategoria(request.getCategoria());
         producto.setDisponible(request.getDisponible() != null ? request.getDisponible() : producto.getDisponible());
 
-        // Actualizar ingredientes base si se proporcionan
+
         if (request.getIngredientesBaseIds() != null) {
             List<Ingrediente> ingredientes = ingredienteRepository.findAllById(request.getIngredientesBaseIds());
             producto.setIngredientesBase(ingredientes);
