@@ -15,7 +15,7 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("API Restaurante McDonald's Style")
+                        .title("Nebula Gourmet")
                         .version("1.0")
                         .description("API para gestión de restaurante con personalización de ingredientes y domicilios")
                         .contact(new Contact()
