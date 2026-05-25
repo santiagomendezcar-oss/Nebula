@@ -1,6 +1,6 @@
 package com.example.Nebula.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +21,7 @@ public class PedidoProducto {
 
     @ManyToOne
     @JoinColumn(name = "pedido_id")
-    @JsonIgnore  // ← IGNORAR para evitar recursión
+    @JsonBackReference  // ← Rompe el bucle, no envía el pedido de vuelta
     private Pedido pedido;
 
     @ManyToOne

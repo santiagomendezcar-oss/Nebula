@@ -1,6 +1,5 @@
 package com.example.Nebula.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -28,8 +27,8 @@ public class Pedido {
     @Enumerated(EnumType.STRING)
     private EstadoPedido estado;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore  // ← CAMBIA a @JsonIgnore (más simple)
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference  // ← Envía los productos al frontend
     private List<PedidoProducto> productos = new ArrayList<>();
 
     private String metodoPago;
@@ -37,13 +36,12 @@ public class Pedido {
     @Column(nullable = false)
     private Boolean esDomicilio = false;
 
-    @OneToOne(mappedBy = "pedido")
-    @JsonIgnore  // ← IGNORAR para evitar recursión
+    @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference  // ← Envía el domicilio al frontend
     private Domicilio domicilio;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
-    @JsonIgnore
     private Usuario usuario;
 
     private String sesionInvitadoId;
