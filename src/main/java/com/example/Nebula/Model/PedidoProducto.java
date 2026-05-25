@@ -21,7 +21,7 @@ public class PedidoProducto {
 
     @ManyToOne
     @JoinColumn(name = "pedido_id")
-    @JsonIgnore  // ← 🔥 EVITA LA RECURSIÓN INFINITA
+    @JsonIgnore  // ← IGNORAR para evitar recursión
     private Pedido pedido;
 
     @ManyToOne
@@ -46,5 +46,4 @@ public class PedidoProducto {
             inverseJoinColumns = @JoinColumn(name = "ingrediente_id")
     )
     private List<Ingrediente> ingredientesEliminados = new ArrayList<>();
-
 }

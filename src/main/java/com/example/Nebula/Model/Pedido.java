@@ -28,8 +28,8 @@ public class Pedido {
     @Enumerated(EnumType.STRING)
     private EstadoPedido estado;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-    @JsonManagedReference  // ← OPCIONAL: ayuda con la serialización
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore  // ← CAMBIA a @JsonIgnore (más simple)
     private List<PedidoProducto> productos = new ArrayList<>();
 
     private String metodoPago;
@@ -38,13 +38,13 @@ public class Pedido {
     private Boolean esDomicilio = false;
 
     @OneToOne(mappedBy = "pedido")
+    @JsonIgnore  // ← IGNORAR para evitar recursión
     private Domicilio domicilio;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
-    @JsonIgnore  // ← EVITA RECURSIÓN CON USUARIO
+    @JsonIgnore
     private Usuario usuario;
 
     private String sesionInvitadoId;
-
 }
